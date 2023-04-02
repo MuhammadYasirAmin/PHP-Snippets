@@ -1,0 +1,44 @@
+if(mysqli_query($conn, $insert_Query)){
+            $ClientName = $_POST["Lead_Name"];
+        $PhoneNumber = $_POST["Lead_Phone"];
+        $EmailAddress = $_POST["Lead_Email"];
+        $SelectedBrand = "Do Class Help";
+        $LeadComments = $_POST["Lead_Message"];
+        $UserName = "From PPC";
+        
+        $url = "https://mmactd.com/assets/php/APIs/api-insert-data.php"; 
+        $client = curl_init($url);
+        $form_data = array(
+                                'ClientName'  => $ClientName,
+                                'PhoneNumber' => $PhoneNumber,
+                                'EmailAddress'  => $EmailAddress,
+                                'SelectedBrand' => $SelectedBrand,
+                                'LeadComments'  => $LeadComments,
+                                'UserName' => $UserName
+                            );
+        curl_setopt($client, CURLOPT_POST, true);
+                    
+        curl_setopt($client, CURLOPT_POSTFIELDS, json_encode($form_data));
+                    
+        curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
+                    
+        $response = curl_exec($client);
+                    
+        curl_close($client);
+        
+            header('location: /Thank-You.php');
+            exit();
+        } else {
+            echo mysqli_error($conn);
+        }
+
+
+
+<?php if($LoginInfo_arr[0]['Team'] !== 'Team Furqan' && $LoginInfo_arr[0]['BUH_Name'] !== 'Furqan BUH') {?>
+                                        <li><a href="/Data-Leads/All-Data-Leads.php">All Data Leads</a></li>
+                                        <?php }?>
+                                        <?php if($roles_array_login[0]['Roles'] === 'Admin' || $LoginInfo_arr[0]['Team'] === 'Team Furqan' || $LoginInfo_arr[0]['BUH_Name'] === 'Furqan BUH') {?>
+                                        <li><a href="/Data-Leads/HFC-Data-Leads.php">HFC Data Leads</a></li>
+                                        <?php }?>
+
+SELECT DISTINCT Website FROM Lead_OCG WHERE website = 'Help For Classes'
